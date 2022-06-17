@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:like_button/like_button.dart';
 import 'package:line_icons/line_icons.dart';
 import '../cubit/news_cubit.dart';
 import '../cubit/news_state.dart';
@@ -16,6 +17,10 @@ class BusinessDetailPage extends StatefulWidget {
 
 class _BusinessDetailPageState extends State<BusinessDetailPage> {
   int activeIndex = 0;
+
+  bool isFavorite = false;
+  int fovoriteCount = 2;
+
   setActiveDot(index) {
     setState(() {
       activeIndex = index;
@@ -25,7 +30,11 @@ class _BusinessDetailPageState extends State<BusinessDetailPage> {
   @override
   Widget build(BuildContext context) {
     return BlocConsumer<NewsCubit, NewsState>(
-      listener: (context, state) {},
+      listener: (context, state) {
+        if (state is NewsGetBusinessWError) {
+          print("error");
+        }
+      },
       builder: (context, state) {
         return Scaffold(
           body: getBody(),
@@ -33,6 +42,22 @@ class _BusinessDetailPageState extends State<BusinessDetailPage> {
       },
     );
   }
+
+  /*
+  return  ConditionalBuilder(
+        condition: state is! NewsGetBusiness,
+        builder: (context)=>
+            ListView.separated(
+              separatorBuilder: (context,index)=>Divider(),
+              shrinkWrap: true,
+              itemCount: NewsCubit.get(context).BusinessList.length,
+              itemBuilder: (context,index){
+                return NewsModel.uiNews(NewsCubit.get(context).BusinessList[index],context);
+              },),
+        fallback: (context)=>Center(child: CircularProgressIndicator(),),
+
+      );
+   */
 
   Widget getBody() {
     return SingleChildScrollView(
@@ -98,13 +123,22 @@ class _BusinessDetailPageState extends State<BusinessDetailPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              IconButton(
-                  icon: SvgPicture.asset(
-                      "assets/images/favorite-svgrepo-com.svg"),
-                  onPressed: () {}),
-              IconButton(
-                  icon: SvgPicture.asset("assets/images/like-svgrepo-com.svg"),
-                  onPressed: () {}),
+              LikeButton(
+                size: 40,
+                isLiked: isFavorite,
+                likeCount: fovoriteCount,
+                likeBuilder: (isFavorite) {
+                  final color = isFavorite ? Colors.red : Colors.grey;
+                  return Icon(Icons.favorite,color:color,size: 40);
+                },
+                likeCountPadding: EdgeInsets.only(left: 12),
+                countBuilder: (count,isFavorite,text){
+                  final color = isFavorite ? Colors.black : Colors.grey;
+                  return Text(
+                    text,style: TextStyle(color: color,fontSize: 24,fontWeight: FontWeight.bold),
+                  );
+                },
+              ),
             ],
           ),
           SizedBox(
@@ -133,7 +167,7 @@ class _BusinessDetailPageState extends State<BusinessDetailPage> {
                       ? 'Undefined'
                       : NewsCubit.get(context).BusinessList[activeIndex]
                           ['description'],
-                  style: TextStyle(height: 1.3, fontSize: 20),
+                  style: TextStyle(height: 1.3, fontSize: 17),
                 ),
                 SizedBox(
                   height: 20,
@@ -151,11 +185,11 @@ class _BusinessDetailPageState extends State<BusinessDetailPage> {
                           width: 8,
                         ),
                         Text(
-                          NewsCubit.get(context).BusinessList[activeIndex]
+                          NewsCubit.get(context).ScienceList[activeIndex]
                                       ['author'] ==
                                   null
                               ? 'Undefined'
-                              : NewsCubit.get(context).BusinessList[activeIndex]
+                              : NewsCubit.get(context).ScienceList[activeIndex]
                                   ['author'],
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),

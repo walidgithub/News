@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:food_api/constant/data_json.dart';
+import 'package:food_api/pages/nav_bar.dart';
 import 'package:food_api/pages/news_detail.dart';
 import 'package:food_api/pages/science_detail.dart';
 import 'package:food_api/pages/sport_detail.dart';
@@ -12,23 +13,26 @@ class HomePage extends StatefulWidget {
 
 class _HomePageState extends State<HomePage> {
   int activeMenu = 0;
+  var scaffoldKey = GlobalKey<ScaffoldState>();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: scaffoldKey,
+      drawer: NavBar(),
       backgroundColor: Colors.white,
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 0,
         leading: IconButton(
-            icon: SvgPicture.asset("assets/images/burger_icon.svg"),
-            onPressed: () {}),
+          onPressed: () {
+            scaffoldKey.currentState?.openDrawer();
+          },
+          icon: SvgPicture.asset("assets/images/burger_icon.svg"),
+        ),
         actions: [
           IconButton(
-              icon: SvgPicture.asset("assets/images/search_icon.svg"),
-              onPressed: () {}),
-          IconButton(
-              icon: SvgPicture.asset("assets/images/language.svg"),
+              icon: SvgPicture.asset("assets/images/language_icon.svg"),
               onPressed: () {}),
         ],
       ),

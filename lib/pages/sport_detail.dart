@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:like_button/like_button.dart';
 import 'package:line_icons/line_icons.dart';
 import '../cubit/news_cubit.dart';
 import '../cubit/news_state.dart';
@@ -16,6 +17,10 @@ class SportDetailPage extends StatefulWidget {
 
 class _SportDetailPageState extends State<SportDetailPage> {
   int activeIndex = 0;
+
+  bool isFavorite = false;
+  int fovoriteCount = 1;
+
   setActiveDot(index) {
     setState(() {
       activeIndex = index;
@@ -98,13 +103,22 @@ class _SportDetailPageState extends State<SportDetailPage> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
-              IconButton(
-                  icon: SvgPicture.asset(
-                      "assets/images/favorite-svgrepo-com.svg"),
-                  onPressed: () {}),
-              IconButton(
-                  icon: SvgPicture.asset("assets/images/like-svgrepo-com.svg"),
-                  onPressed: () {}),
+              LikeButton(
+                size: 40,
+                isLiked: isFavorite,
+                likeCount: fovoriteCount,
+                likeBuilder: (isFavorite) {
+                  final color = isFavorite ? Colors.red : Colors.grey;
+                  return Icon(Icons.favorite,color:color,size: 40);
+                },
+                likeCountPadding: EdgeInsets.only(left: 12),
+                countBuilder: (count,isFavorite,text){
+                  final color = isFavorite ? Colors.black : Colors.grey;
+                  return Text(
+                    text,style: TextStyle(color: color,fontSize: 24,fontWeight: FontWeight.bold),
+                  );
+                },
+              ),
             ],
           ),
           SizedBox(
@@ -133,7 +147,7 @@ class _SportDetailPageState extends State<SportDetailPage> {
                       ? 'Undefined'
                       : NewsCubit.get(context).SportList[activeIndex]
                   ['description'],
-                  style: TextStyle(height: 1.3, fontSize: 20),
+                  style: TextStyle(height: 1.3, fontSize: 17),
                 ),
                 SizedBox(
                   height: 20,

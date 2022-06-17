@@ -2,27 +2,20 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:font_awesome_flutter/font_awesome_flutter.dart';
-import 'package:line_icons/line_icon.dart';
 import 'package:line_icons/line_icons.dart';
 import '../cubit/news_cubit.dart';
 import '../cubit/news_state.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 
 import '../widgets/news_slider.dart';
-import 'package:like_button/like_button.dart';
 
-class ScienceDetailPage extends StatefulWidget {
+class Favorites extends StatefulWidget {
   @override
-  _ScienceDetailPageState createState() => _ScienceDetailPageState();
+  _FavoritesState createState() => _FavoritesState();
 }
 
-class _ScienceDetailPageState extends State<ScienceDetailPage> {
+class _FavoritesState extends State<Favorites> {
   int activeIndex = 0;
-
-  bool isFavorite = false;
-  int fovoriteCount = 3;
-
   setActiveDot(index) {
     setState(() {
       activeIndex = index;
@@ -57,7 +50,7 @@ class _ScienceDetailPageState extends State<ScienceDetailPage> {
                       height: 300,
                       width: MediaQuery.of(context).size.width,
                       child: CarouselSlider.builder(
-                        itemCount: NewsCubit.get(context).ScienceList.length,
+                        itemCount: NewsCubit.get(context).BusinessList.length,
                         options: CarouselOptions(
                           onPageChanged: (index, reason) {
                             setActiveDot(index);
@@ -71,7 +64,7 @@ class _ScienceDetailPageState extends State<ScienceDetailPage> {
                             (BuildContext context, int index, int realIndex) {
                           return Image(
                             image: NetworkImage(NewsCubit.get(context)
-                                .ScienceList[index]['urlToImage']),
+                                .BusinessList[index]['urlToImage']),
                           );
                         },
                       ),
@@ -79,7 +72,7 @@ class _ScienceDetailPageState extends State<ScienceDetailPage> {
                     Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         children: List.generate(
-                            NewsCubit.get(context).ScienceList.length, (idx) {
+                            NewsCubit.get(context).BusinessList.length, (idx) {
                           return activeIndex == idx
                               ? ActiveDot()
                               : InactiveDot();
@@ -89,38 +82,12 @@ class _ScienceDetailPageState extends State<ScienceDetailPage> {
               ),
               SafeArea(
                 child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    IconButton(
-                        icon: Icon(LineIcons.arrowLeft),
-                        onPressed: () {
-                          Navigator.pop(context);
-                        }),
                     IconButton(icon: Icon(Icons.more_vert), onPressed: () {})
                   ],
                 ),
               )
-            ],
-          ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              LikeButton(
-                size: 40,
-                isLiked: isFavorite,
-                likeCount: fovoriteCount,
-                likeBuilder: (isFavorite) {
-                  final color = isFavorite ? Colors.red : Colors.grey;
-                  return Icon(Icons.favorite,color:color,size: 40);
-                },
-                likeCountPadding: EdgeInsets.only(left: 12),
-                countBuilder: (count,isFavorite,text){
-                  final color = isFavorite ? Colors.black : Colors.grey;
-                  return Text(
-                    text,style: TextStyle(color: color,fontSize: 24,fontWeight: FontWeight.bold),
-                  );
-                },
-              ),
             ],
           ),
           SizedBox(
@@ -132,10 +99,10 @@ class _ScienceDetailPageState extends State<ScienceDetailPage> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  NewsCubit.get(context).ScienceList[activeIndex]['title'] ==
+                  NewsCubit.get(context).BusinessList[activeIndex]['title'] ==
                       null
                       ? 'Undefined'
-                      : NewsCubit.get(context).ScienceList[activeIndex]
+                      : NewsCubit.get(context).BusinessList[activeIndex]
                   ['title'],
                   style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
                 ),
@@ -143,11 +110,11 @@ class _ScienceDetailPageState extends State<ScienceDetailPage> {
                   height: 20,
                 ),
                 Text(
-                  NewsCubit.get(context).ScienceList[activeIndex]
+                  NewsCubit.get(context).BusinessList[activeIndex]
                   ['description'] ==
                       null
                       ? 'Undefined'
-                      : NewsCubit.get(context).ScienceList[activeIndex]
+                      : NewsCubit.get(context).BusinessList[activeIndex]
                   ['description'],
                   style: TextStyle(height: 1.3, fontSize: 17),
                 ),
@@ -167,11 +134,11 @@ class _ScienceDetailPageState extends State<ScienceDetailPage> {
                           width: 8,
                         ),
                         Text(
-                          NewsCubit.get(context).ScienceList[activeIndex]
+                          NewsCubit.get(context).BusinessList[activeIndex]
                           ['author'] ==
                               null
                               ? 'Undefined'
-                              : NewsCubit.get(context).ScienceList[activeIndex]
+                              : NewsCubit.get(context).BusinessList[activeIndex]
                           ['author'],
                           style: TextStyle(fontWeight: FontWeight.bold),
                         ),
@@ -194,11 +161,11 @@ class _ScienceDetailPageState extends State<ScienceDetailPage> {
                         ),
                         SizedBox(height: 10),
                         Text(
-                          NewsCubit.get(context).ScienceList[activeIndex]
+                          NewsCubit.get(context).BusinessList[activeIndex]
                           ['publishedAt'] ==
                               null
                               ? 'Undefined'
-                              : NewsCubit.get(context).ScienceList[activeIndex]
+                              : NewsCubit.get(context).BusinessList[activeIndex]
                           ['publishedAt'],
                           style: TextStyle(
                               fontSize: 15, fontWeight: FontWeight.bold),
