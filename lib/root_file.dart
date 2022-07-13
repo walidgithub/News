@@ -27,15 +27,15 @@ class _RootAppState extends State<RootApp> {
       FontAwesomeIcons.home,
       size: 30,
     ),
-    Icon(
+    const Icon(
       FontAwesomeIcons.heart,
       size: 30,
     ),
-    Icon(
+    const Icon(
       FontAwesomeIcons.user,
       size: 30,
     ),
-    Icon(
+    const Icon(
       FontAwesomeIcons.question,
       size: 30,
     ),
@@ -43,6 +43,7 @@ class _RootAppState extends State<RootApp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      extendBody: true,
       body: screens[index],
       bottomNavigationBar: Theme(
         data: Theme.of(context)
